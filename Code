@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Średniowieczny Clicker</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'MedievalSharp', cursive;
+            background: linear-gradient(to bottom, #2c1810, #1a0e08);
+            color: #f4e4bc;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(to bottom, #8b6914, #5a440e);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            border: 3px solid #d4af37;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+            margin-bottom: 10px;
+        }
+        
+        .currency-display {
+            font-size: 1.8em;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .per-second {
+            font-size: 1.2em;
+            color: #ffd700;
+        }
+        
+        .rebirth-info {
+            font-size: 1.1em;
+            color: #ff6b6b;
+            margin-top: 10px;
+        }
+        
+        .prestige-info {
+            font-size: 1.1em;
+            color: #e91e63;
+            margin-top: 5px;
+        }
+        
+        .event-banner {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(to bottom, #4a148c, #7b1fa2);
+            border: 3px solid #ffd700;
+            border-radius: 15px;
+            padding: 15px 30px;
+            text-align: center;
+            z-index: 1500;
+            animation: slideDown 0.5s ease-out;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+        }
+        
+        @keyframes slideDown {
+            from {
+                top: -100px;
+            }
+            to {
+                top: 20px;
+            }
+        }
+        
+        .event-title {
+            font-size: 1.5em;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+        
+        .event-description {
+            font-size: 1.1em;
+            color: #f4e4bc;
+            margin-bottom: 5px;
+        }
+        
+        .event-timer {
+            font-size: 1.2em;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .main-clicker {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .coin-button {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, #ffd700, #b8860b);
+            border: 5px solid #8b6914;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 3em;
+            color: #3d2914;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: transform 0.1s;
+            position: relative;
+            overflow: hidden;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .coin-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .coin-button:active {
+            transform: scale(0.95);
+        }
+        
+        .coin-button:focus {
+            outline: none;
+        }
+        
+        .coin-button::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), transparent);
+            border-radius: 50%;
+        }
+        
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .game-button {
+            background: linear-gradient(to bottom, #8b6914, #5a440e);
+            border: 3px solid #d4af37;
+            color: #fff;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            outline: none;
+            font-family: 'MedievalSharp', cursive;
+            position: relative;
+        }
+        
+        .game-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212,175,55,0.5);
+        }
+        
+        .game-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .rebirth-button {
+            background: linear-gradient(to bottom, #8b0000, #5a0000);
+            border-color: #ff6b6b;
+        }
+        
+        .rebirth-button:hover:not(:disabled) {
+            box-shadow: 0 5px 15px rgba(255,107,107,0.5);
+        }
+        
+        .prestige-button {
+            background: linear-gradient(to bottom, #880e4f, #ad1457);
+            border-color: #e91e63;
+        }
+        
+        .prestige-button:hover:not(:disabled) {
+            box-shadow: 0 5px 15px rgba(233,30,99,0.5);
+        }
+        
+        .daily-quests-button {
+            background: linear-gradient(to bottom, #4a148c, #311b92);
+            border-color: #7c4dff;
+        }
+        
+        .daily-quests-button:hover {
+            box-shadow: 0 5px 15px rgba(124,77,255,0.5);
+        }
+        
+        .quest-notification {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .upgrades-section {
+            margin-top: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .collapsible {
+            background: linear-gradient(to bottom, #5a440e, #3d2914);
+            color: #ffd700;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: 3px solid #8b6914;
+            border-radius: 10px;
+            text-align: center;
+            outline: none;
+            font-size: 1.8em;
+            font-family: 'MedievalSharp', cursive;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+        }
+        
+        .collapsible:hover {
+            background: linear-gradient(to bottom, #6b4a1f, #4a3518);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,215,0,0.3);
+        }
+        
+        .collapsible:after {
+            content: '▼';
+            color: #ffd700;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .active:after {
+            transform: rotate(180deg);
+        }
+        
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: rgba(0,0,0,0.3);
+            border-radius: 0 0 10px 10px;
+            margin-top: -10px;
+            padding: 0;
+        }
+        
+        .collapsible-content.show {
+            max-height: 600px;
+            padding: 10px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        /* Stylizacja scrollbara */
+        .collapsible-content::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        .collapsible-content::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.3);
+            border-radius: 5px;
+        }
+        
+        .collapsible-content::-webkit-scrollbar-thumb {
+            background: #8b6914;
+            border-radius: 5px;
+        }
+        
+        .collapsible-content::-webkit-scrollbar-thumb:hover {
+            background: #d4af37;
+        }
+        
+        .upgrades-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        .upgrade {
+            background: linear-gradient(to right, #3d2914, #5a3a1a);
+            border: 2px solid #8b6914;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .upgrade:hover:not(.locked) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,215,0,0.3);
+        }
+        
+        .upgrade.affordable {
+            border-color: #ffd700;
+            background: linear-gradient(to right, #4a3518, #6b4a1f);
+        }
+        
+        .upgrade.purchased {
+            opacity: 0.8;
+        }
+        
+        .upgrade.locked {
+            background: linear-gradient(to right, #1a1a1a, #2a2a2a);
+            border-color: #555;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        .upgrade.locked .upgrade-name,
+        .upgrade.locked .upgrade-description,
+        .upgrade.locked .upgrade-cost {
+            color: #888;
+        }
+        
+        .upgrade-name {
+            font-size: 1.3em;
+            margin-bottom: 5px;
+            color: #ffd700;
+        }
+        
+        .upgrade-description {
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            color: #d4af37;
+        }
+        
+        .upgrade-cost {
+            font-size: 1.1em;
+            color: #f4e4bc;
+        }
+        
+        .upgrade-level {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: #8b6914;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        
+        .lock-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            color: #ff6b6b;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+        
+        .unlock-info {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.8em;
+            color: #ff6b6b;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .floating-text {
+            position: fixed;
+            pointer-events: none;
+            animation: float-up 1s ease-out forwards;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            z-index: 1000;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(to bottom, #3d2914, #2c1810);
+            border: 3px solid #ff6b6b;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal h2 {
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        
+        .modal p {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .modal button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'MedievalSharp', cursive;
+            outline: none;
+        }
+        
+        .confirm-button {
+            background: linear-gradient(to bottom, #8b0000, #5a0000);
+            border: 2px solid #ff6b6b;
+            color: #fff;
+        }
+        
+        .cancel-button {
+            background: linear-gradient(to bottom, #5a5a5a, #3a3a3a);
+            border: 2px solid #888;
+            color: #fff;
+        }
+        
+        .prestige-modal .modal-content {
+            border-color: #e91e63;
+        }
+        
+        .prestige-modal h2 {
+            color: #e91e63;
+        }
+        
+                .prestige-modal .confirm-button {
+            background: linear-gradient(to bottom, #880e4f, #ad1457);
+            border-color: #e91e63;
+        }
+        
+        .quests-modal .modal-content {
+            border-color: #7c4dff;
+        }
+        
+        .quests-modal h2 {
+            color: #7c4dff;
+        }
+        
+        .quest-item {
+            background: linear-gradient(to right, #2a1a4a, #3a2a5a);
+            border: 2px solid #5a3a8a;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: left;
+        }
+        
+        .quest-item.completed {
+            border-color: #4caf50;
+            background: linear-gradient(to right, #1a3a1a, #2a4a2a);
+        }
+        
+        .quest-item.claimed {
+            opacity: 0.5;
+        }
+        
+        .quest-title {
+            font-size: 1.2em;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+        
+        .quest-description {
+            font-size: 0.9em;
+            color: #d4af37;
+            margin-bottom: 5px;
+        }
+        
+        .quest-progress {
+            font-size: 0.9em;
+            color: #f4e4bc;
+            margin-bottom: 10px;
+        }
+        
+        .quest-reward {
+            font-size: 1em;
+            color: #4caf50;
+            margin-bottom: 10px;
+        }
+        
+        .claim-button {
+            background: linear-gradient(to bottom, #4caf50, #388e3c);
+            border: 2px solid #66bb6a;
+            color: #fff;
+            padding: 8px 16px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'MedievalSharp', cursive;
+        }
+        
+        .claim-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .timer-info {
+            margin-top: 20px;
+            font-size: 1.1em;
+            color: #7c4dff;
+        }
+        
+        @keyframes float-up {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+            .currency-display {
+                font-size: 1.5em;
+            }
+            .coin-button {
+                width: 120px;
+                height: 120px;
+                font-size: 2.5em;
+            }
+            .button-row {
+                flex-direction: column;
+                align-items: center;
+            }
+            .game-button {
+                width: 80%;
+                max-width: 300px;
+            }
+            .collapsible {
+                font-size: 1.5em;
+            }
+            .collapsible-content.show {
+                max-height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Królestwo Dukatów</h1>
+            <div class="currency-display">
+                <div>Dukaty: <span id="currency">0</span></div>
+                <div class="per-second">Za sekundę: <span id="perSecond">0</span></div>
+                <div class="rebirth-info">Kamienie Filozoficzne: <span id="rebirthCurrency">0</span> (Mnożnik: x<span id="rebirthMultiplier">1</span>)</div>
+                <div class="prestige-info">Korony Cesarskie: <span id="prestigeCurrency">0</span> (Bonus startowy: +<span id="prestigeBonus">0</span>%)</div>
+            </div>
+        </div>
+        
+        <div id="eventBanner" style="display: none;"></div>
+        
+        <div class="main-clicker">
+            <button class="coin-button" onclick="clickCoin(event)">💰</button>
+            <div class="button-row">
+                <button class="game-button daily-quests-button" onclick="showQuestsModal()">
+                    Zadania Dzienne
+                    <span class="quest-notification" id="questNotification" style="display: none;">!</span>
+                </button>
+                <button class="game-button rebirth-button" id="rebirthButton" onclick="showRebirthModal()">Odrodzenie</button>
+                <button class="game-button prestige-button" id="prestigeButton" onclick="showPrestigeModal()">Cesarskie Odrodzenie</button>
+            </div>
+        </div>
+        
+        <div class="upgrades-section">
+            <button class="collapsible" onclick="toggleCollapsible(this, 'clickUpgradesContent')">
+                Ulepszenia Kliknięć
+            </button>
+            <div class="collapsible-content" id="clickUpgradesContent">
+                <div class="upgrades-container" id="clickUpgrades"></div>
+            </div>
+        </div>
+        
+        <div class="upgrades-section">
+            <button class="collapsible" onclick="toggleCollapsible(this, 'passiveUpgradesContent')">
+                Ulepszenia Pasywne
+            </button>
+            <div class="collapsible-content" id="passiveUpgradesContent">
+                <div class="upgrades-container" id="passiveUpgrades"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="rebirthModal">
+        <div class="modal-content">
+            <h2>Odrodzenie Królestwa</h2>
+            <p>Czy na pewno chcesz się odrodzić?</p>
+            <p>Otrzymasz: <span id="rebirthGain">0</span> Kamieni Filozoficznych</p>
+            <p>Stracisz wszystkie dukaty i ulepszenia, ale zyskasz trwały mnożnik do produkcji!</p>
+            <p>Każdy Kamień Filozoficzny zwiększa produkcję o 50%</p>
+            <button class="confirm-button" onclick="performRebirth()">Tak, Odrodź się!</button>
+            <button class="cancel-button" onclick="hideRebirthModal()">Anuluj</button>
+        </div>
+    </div>
+    
+    <div class="modal prestige-modal" id="prestigeModal">
+        <div class="modal-content">
+            <h2>Cesarskie Odrodzenie</h2>
+            <p>To jest najwyższa forma odrodzenia!</p>
+            <p>Otrzymasz: <span id="prestigeGain">0</span> Koron Cesarskich</p>
+            <p>Stracisz WSZYSTKO łącznie z Kamieniami Filozoficznymi!</p>
+            <p>Każda Korona Cesarska daje:</p>
+            <ul style="text-align: left; margin: 0 auto; display: inline-block;">
+                <li>+10% do startowej produkcji</li>
+                <li>+5% do wszystkich mnożników</li>
+                <li>+1 do startowego poziomu ulepszeń</li>
+            </ul>
+            <button class="confirm-button" onclick="performPrestige()">Zostań Cesarzem!</button>
+            <button class="cancel-button" onclick="hidePrestigeModal()">Anuluj</button>
+        </div>
+    </div>
+    
+    <div class="modal quests-modal" id="questsModal">
+        <div class="modal-content">
+            <h2>Zadania Dzienne</h2>
+            <div id="questsList"></div>
+            <div class="timer-info">Nowe zadania za: <span id="questTimer">00:00:00</span></div>
+            <button class="cancel-button" onclick="hideQuestsModal()">Zamknij</button>
+        </div>
+    </div>
+    
+    <script>
+        let gameState = {
+            currency: 0,
+            clickPower: 1,
+            passiveIncome: 0,
+            rebirthCurrency: 0,
+            rebirthMultiplier: 1,
+            prestigeCurrency: 0,
+            prestigeBonus: 1,
+            totalEarned: 0,
+            totalClicks: 0,
+            upgradesBought: 0,
+            totalRebirths: 0,
+            lastQuestReset: new Date().toDateString(),
+            dailyQuests: [],
+            upgrades: {
+                click: [
+                    // Podstawowe upgrady (zawsze odblokowane)
+                    {id: 'click1', name: 'Żelazny Młot', description: '+1 dukat za kliknięcie', baseCost: 10, power: 1, level: 0, requiredRebirths: 0},
+                    {id: 'click2', name: 'Srebrny Miecz', description: '+5 dukatów za kliknięcie', baseCost: 100, power: 5, level: 0, requiredRebirths: 0},
+                    {id: 'click3', name: 'Złota Korona', description: '+25 dukatów za kliknięcie', baseCost: 1000, power: 25, level: 0, requiredRebirths: 0},
+                    {id: 'click4', name: 'Magiczny Berło', description: '+100 dukatów za kliknięcie', baseCost: 10000, power: 100, level: 0, requiredRebirths: 0},
+                    {id: 'click5', name: 'Smocza Zbroja', description: '+500 dukatów za kliknięcie', baseCost: 100000, power: 500, level: 0, requiredRebirths: 0},
+                    // Nowe upgrady (wymagają odrodzeń)
+                    {id: 'click6', name: 'Miecz Światła', description: '+2,500 dukatów za kliknięcie', baseCost: 1000000, power: 2500, level: 0, requiredRebirths: 1},
+                    {id: 'click7', name: 'Młot Tytanów', description: '+10,000 dukatów za kliknięcie', baseCost: 10000000, power: 10000, level: 0, requiredRebirths: 2},
+                    {id: 'click8', name: 'Kostur Arcymaga', description: '+50,000 dukatów za kliknięcie', baseCost: 100000000, power: 50000, level: 0, requiredRebirths: 3},
+                    {id: 'click9', name: 'Ostrze Feniksa', description: '+250,000 dukatów za kliknięcie', baseCost: 1000000000, power: 250000, level: 0, requiredRebirths: 4},
+                    {id: 'click10', name: 'Berło Bogów', description: '+1M dukatów za kliknięcie', baseCost: 10000000000, power: 1000000, level: 0, requiredRebirths: 5},
+                    {id: 'click11', name: 'Klinga Wieczności', description: '+5M dukatów za kliknięcie', baseCost: 100000000000, power: 5000000, level: 0, requiredRebirths: 6},
+                    {id: 'click12', name: 'Młot Stworzenia', description: '+25M dukatów za kliknięcie', baseCost: 1000000000000, power: 25000000, level: 0, requiredRebirths: 7},
+                    {id: 'click13', name: 'Kosmos w Dłoni', description: '+100M dukatów za kliknięcie', baseCost: 10000000000000, power: 100000000, level: 0, requiredRebirths: 8},
+                    {id: 'click14', name: 'Esencja Nieskończoności', description: '+500M dukatów za kliknięcie', baseCost: 100000000000000, power: 500000000, level: 0, requiredRebirths: 9},
+                    {id: 'click15', name: 'Omnipotencja', description: '+1B dukatów za kliknięcie', baseCost: 1000000000000000, power: 1000000000, level: 0, requiredRebirths: 10}
+                ],
+                passive: [
+                    // Podstawowe upgrady (zawsze odblokowane)
+                    {id: 'passive1', name: 'Chłop', description: '+1 dukat/s', baseCost: 50, power: 1, level: 0, requiredRebirths: 0},
+                    {id: 'passive2', name: 'Rzemieślnik', description: '+5 dukatów/s', baseCost: 500, power: 5, level: 0, requiredRebirths: 0},
+                    {id: 'passive3', name: 'Kupiec', description: '+20 dukatów/s', baseCost: 5000, power: 20, level: 0, requiredRebirths: 0},
+                    {id: 'passive4', name: 'Rycerz', description: '+100 dukatów/s', baseCost: 50000, power: 100, level: 0, requiredRebirths: 0},
+                    {id: 'passive5', name: 'Alchemik', description: '+500 dukatów/s', baseCost: 500000, power: 500, level: 0, requiredRebirths: 0},
+                    {id: 'passive6', name: 'Smok', description: '+2,500 dukatów/s', baseCost: 5000000, power: 2500, level: 0, requiredRebirths: 0},
+                    // Nowe upgrady (wymagają odrodzeń)
+                    {id: 'passive7', name: 'Arcymag', description: '+10,000 dukatów/s', baseCost: 50000000, power: 10000, level: 0, requiredRebirths: 1},
+                    {id: 'passive8', name: 'Tytan', description: '+50,000 dukatów/s', baseCost: 500000000, power: 50000, level: 0, requiredRebirths: 2},
+                    {id: 'passive9', name: 'Anioł', description: '+250,000 dukatów/s', baseCost: 5000000000, power: 250000, level: 0, requiredRebirths: 3},
+                    {id: 'passive10', name: 'Półbóg', description: '+1M dukatów/s', baseCost: 50000000000, power: 1000000, level: 0, requiredRebirths: 4},
+                                        {id: 'passive11', name: 'Starożytny', description: '+5M dukatów/s', baseCost: 500000000000, power: 5000000, level: 0, requiredRebirths: 5},
+                    {id: 'passive12', name: 'Kosmiczny Strażnik', description: '+25M dukatów/s', baseCost: 5000000000000, power: 25000000, level: 0, requiredRebirths: 6},
+                    {id: 'passive13', name: 'Władca Czasu', description: '+100M dukatów/s', baseCost: 50000000000000, power: 100000000, level: 0, requiredRebirths: 7},
+                    {id: 'passive14', name: 'Architekt Rzeczywistości', description: '+500M dukatów/s', baseCost: 500000000000000, power: 500000000, level: 0, requiredRebirths: 8},
+                    {id: 'passive15', name: 'Byt Transcendentny', description: '+1B dukatów/s', baseCost: 5000000000000000, power: 1000000000, level: 0, requiredRebirths: 9},
+                    {id: 'passive16', name: 'Absolut', description: '+5B dukatów/s', baseCost: 50000000000000000, power: 5000000000, level: 0, requiredRebirths: 10}
+                ]
+            }
+        };
+        
+        const questTemplates = [
+            {
+                id: 'clicks1',
+                title: 'Początkujący Klikacz',
+                description: 'Kliknij 100 razy',
+                type: 'clicks',
+                target: 100,
+                reward: {type: 'currency', amount: 500}
+            },
+            {
+                id: 'clicks2',
+                title: 'Mistrz Kliknięć',
+                description: 'Kliknij 500 razy',
+                type: 'clicks',
+                target: 500,
+                reward: {type: 'currency', amount: 5000}
+            },
+            {
+                id: 'clicks3',
+                title: 'Legenda Kliknięć',
+                description: 'Kliknij 1000 razy',
+                type: 'clicks',
+                target: 1000,
+                reward: {type: 'multiplier', duration: 600, multiplier: 2}
+            },
+            {
+                id: 'upgrades1',
+                title: 'Kolekcjoner',
+                description: 'Kup 5 ulepszeń',
+                type: 'upgrades',
+                target: 5,
+                reward: {type: 'currency', amount: 1000}
+            },
+            {
+                id: 'upgrades2',
+                title: 'Wielki Inwestor',
+                description: 'Kup 10 ulepszeń',
+                type: 'upgrades',
+                target: 10,
+                reward: {type: 'currency', amount: 10000}
+            },
+            {
+                id: 'production1',
+                title: 'Mała Produkcja',
+                description: 'Osiągnij 100 dukatów/s',
+                type: 'production',
+                target: 100,
+                reward: {type: 'currency', amount: 50000}
+            },
+            {
+                id: 'production2',
+                title: 'Wielka Produkcja',
+                description: 'Osiągnij 1000 dukatów/s',
+                type: 'production',
+                target: 1000,
+                reward: {type: 'stone', amount: 1}
+            },
+            {
+                id: 'wealth1',
+                title: 'Bogacz',
+                description: 'Posiadaj 100K dukatów',
+                type: 'wealth',
+                target: 100000,
+                reward: {type: 'currency', amount: 20000}
+            },
+            {
+                id: 'wealth2',
+                title: 'Milioner',
+                description: 'Posiadaj 1M dukatów',
+                type: 'wealth',
+                target: 1000000,
+                reward: {type: 'stone', amount: 1}
+            }
+        ];
+        
+        const randomEvents = [
+            {
+                name: 'Jarmark Królewski',
+                description: 'Podwójne dukaty z kliknięć!',
+                duration: 120,
+                type: 'clickMultiplier',
+                multiplier: 2,
+                color: '#ffd700'
+            },
+            {
+                name: 'Wizyta Króla',
+                description: '+100% do produkcji pasywnej!',
+                duration: 180,
+                type: 'passiveMultiplier',
+                multiplier: 2,
+                color: '#ff6b6b'
+            },
+            {
+                name: 'Pełnia Księżyca',
+                description: 'Alchemicy produkują 5x więcej!',
+                duration: 90,
+                type: 'specificUpgrade',
+                upgradeId: 'passive5',
+                multiplier: 5,
+                color: '#7c4dff'
+            },
+            {
+                name: 'Błogosławieństwo Smoka',
+                description: 'Wszystkie smoki produkują 3x więcej!',
+                duration: 120,
+                type: 'specificUpgrade',
+                upgradeId: 'passive6',
+                multiplier: 3,
+                color: '#e91e63'
+            },
+            {
+                name: 'Złota Gorączka',
+                description: '+50% do całej produkcji!',
+                duration: 150,
+                type: 'allMultiplier',
+                multiplier: 1.5,
+                color: '#ffc107'
+            }
+        ];
+        
+        let activeMultiplier = null;
+        let activeEvent = null;
+        let nextEventTime = Date.now() + (Math.random() * 300000 + 300000);
+        
+        function toggleCollapsible(button, contentId) {
+            button.classList.toggle("active");
+            const content = document.getElementById(contentId);
+            content.classList.toggle("show");
+        }
+        
+        function initializePrestige() {
+            if (gameState.prestigeCurrency > 0) {
+                gameState.clickPower = 1 + Math.floor(gameState.prestigeCurrency * 0.1);
+                gameState.passiveIncome = Math.floor(gameState.prestigeCurrency * 0.1);
+                gameState.prestigeBonus = 1 + (gameState.prestigeCurrency * 0.05);
+                
+                const startLevels = Math.floor(gameState.prestigeCurrency);
+                gameState.upgrades.click.forEach(upgrade => {
+                    if (upgrade.requiredRebirths <= gameState.totalRebirths) {
+                        upgrade.level = Math.min(startLevels, 5);
+                        gameState.clickPower += upgrade.power * upgrade.level;
+                    }
+                });
+                gameState.upgrades.passive.forEach(upgrade => {
+                    if (upgrade.requiredRebirths <= gameState.totalRebirths) {
+                        upgrade.level = Math.min(startLevels, 5);
+                        gameState.passiveIncome += upgrade.power * upgrade.level;
+                    }
+                });
+            }
+        }
+        
+        function checkRandomEvent() {
+            if (!activeEvent && Date.now() >= nextEventTime) {
+                startRandomEvent();
+            }
+        }
+        
+        function startRandomEvent() {
+            const event = randomEvents[Math.floor(Math.random() * randomEvents.length)];
+            activeEvent = {
+                ...event,
+                endTime: Date.now() + (event.duration * 1000)
+            };
+            
+            showEventBanner(event);
+            
+            setTimeout(() => {
+                activeEvent = null;
+                hideEventBanner();
+                nextEventTime = Date.now() + (Math.random() * 300000 + 300000);
+            }, event.duration * 1000);
+        }
+        
+        function showEventBanner(event) {
+            const banner = document.getElementById('eventBanner');
+            banner.innerHTML = `
+                <div class="event-title">${event.name}</div>
+                <div class="event-description">${event.description}</div>
+                <div class="event-timer" id="eventTimer">2:00</div>
+            `;
+            banner.style.borderColor = event.color;
+            banner.style.display = 'block';
+        }
+        
+        function hideEventBanner() {
+            document.getElementById('eventBanner').style.display = 'none';
+        }
+        
+        function updateEventTimer() {
+            if (activeEvent) {
+                const timeLeft = Math.max(0, activeEvent.endTime - Date.now());
+                const minutes = Math.floor(timeLeft / 60000);
+                const seconds = Math.floor((timeLeft % 60000) / 1000);
+                const timerElement = document.getElementById('eventTimer');
+                if (timerElement) {
+                    timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }
+        }
+        
+        function getEventMultiplier(type, upgradeId = null) {
+            if (!activeEvent) return 1;
+            
+            switch(activeEvent.type) {
+                case 'clickMultiplier':
+                    return type === 'click' ? activeEvent.multiplier : 1;
+                case 'passiveMultiplier':
+                    return type === 'passive' ? activeEvent.multiplier : 1;
+                case 'specificUpgrade':
+                    return upgradeId === activeEvent.upgradeId ? activeEvent.multiplier : 1;
+                case 'allMultiplier':
+                    return activeEvent.multiplier;
+                default:
+                    return 1;
+            }
+        }
+        
+        function calculatePrestigeGain() {
+            return Math.floor(gameState.totalRebirths / 10);
+        }
+        
+        function initializeDailyQuests() {
+            const today = new Date().toDateString();
+            
+            if (gameState.lastQuestReset !== today) {
+                gameState.dailyQuests = [];
+                gameState.lastQuestReset = today;
+                
+                const shuffled = [...questTemplates].sort(() => 0.5 - Math.random());
+                for (let i = 0; i < 3; i++) {
+                    gameState.dailyQuests.push({
+                        ...shuffled[i],
+                        progress: 0,
+                        completed: false,
+                        claimed: false,
+                        startValue: getQuestStartValue(shuffled[i].type)
+                    });
+                }
+                
+                saveGame();
+            }
+            
+            updateQuestNotification();
+        }
+        
+        function getQuestStartValue(type) {
+            switch(type) {
+                case 'clicks': return gameState.totalClicks;
+                case 'upgrades': return gameState.upgradesBought;
+                default: return 0;
+            }
+        }
+        
+        function updateQuestProgress() {
+            let hasUpdate = false;
+            
+            gameState.dailyQuests.forEach(quest => {
+                if (!quest.completed) {
+                    let currentValue = 0;
+                    
+                    switch(quest.type) {
+                        case 'clicks':
+                            currentValue = gameState.totalClicks - quest.startValue;
+                            break;
+                        case 'upgrades':
+                            currentValue = gameState.upgradesBought - quest.startValue;
+                            break;
+                        case 'production':
+                            currentValue = gameState.passiveIncome * gameState.rebirthMultiplier * gameState.prestigeBonus;
+                            break;
+                        case 'wealth':
+                            currentValue = gameState.currency;
+                            break;
+                    }
+                    
+                    quest.progress = Math.min(currentValue, quest.target);
+                    
+                    if (quest.progress >= quest.target) {
+                        quest.completed = true;
+                        hasUpdate = true;
+                    }
+                }
+            });
+            
+            if (hasUpdate) {
+                updateQuestNotification();
+            }
+        }
+        
+        function updateQuestNotification() {
+            const notification = document.getElementById('questNotification');
+            const hasClaimable = gameState.dailyQuests.some(q => q.completed && !q.claimed);
+            notification.style.display = hasClaimable ? 'flex' : 'none';
+        }
+        
+        function showQuestsModal() {
+            updateQuestProgress();
+            renderQuests();
+            document.getElementById('questsModal').style.display = 'block';
+            updateQuestTimer();
+        }
+        
+        function hideQuestsModal() {
+            document.getElementById('questsModal').style.display = 'none';
+        }
+        
+        function renderQuests() {
+            const questsList = document.getElementById('questsList');
+            questsList.innerHTML = '';
+            
+            gameState.dailyQuests.forEach((quest, index) => {
+                const questElement = document.createElement('div');
+                questElement.className = `quest-item ${quest.completed ? 'completed' : ''} ${quest.claimed ? 'claimed' : ''}`;
+                
+                let rewardText = '';
+                switch(quest.reward.type) {
+                    case 'currency':
+                        rewardText = `${formatNumber(quest.reward.amount)} dukatów`;
+                        break;
+                    case 'multiplier':
+                        rewardText = `x${quest.reward.multiplier} produkcja na ${quest.reward.duration/60} minut`;
+                        break;
+                    case 'stone':
+                        rewardText = `${quest.reward.amount} Kamień Filozoficzny`;
+                        break;
+                }
+                
+                questElement.innerHTML = `
+                    <div class="quest-title">${quest.title}</div>
+                    <div class="quest-description">${quest.description}</div>
+                    <div class="quest-progress">Postęp: ${formatNumber(quest.progress)}/${formatNumber(quest.target)}</div>
+                    <div class="quest-reward">Nagroda: ${rewardText}</div>
+                    ${quest.completed && !quest.claimed ? 
+                        `<button class="claim-button" onclick="claimReward(${index})">Odbierz Nagrodę</button>` : 
+                        quest.claimed ? '<div style="color: #888;">Odebrano</div>' : ''}
+                `;
+                
+                questsList.appendChild(questElement);
+            });
+        }
+        
+        function claimReward(questIndex) {
+            const quest = gameState.dailyQuests[questIndex];
+            if (!quest.completed || quest.claimed) return;
+            
+            quest.claimed = true;
+            
+            switch(quest.reward.type) {
+                case 'currency':
+                    gameState.currency += quest.reward.amount;
+                    break;
+                case 'multiplier':
+                    activateMultiplier(quest.reward.multiplier, quest.reward.duration);
+                    break;
+                case 'stone':
+                    gameState.rebirthCurrency += quest.reward.amount;
+                    gameState.rebirthMultiplier = 1 + (gameState.rebirthCurrency * 0.5);
+                    break;
+            }
+            
+            updateDisplay();
+            updateQuestNotification();
+            renderQuests();
+            saveGame();
+        }
+        
+        function activateMultiplier(multiplier, duration) {
+            if (activeMultiplier) {
+                clearTimeout(activeMultiplier.timeout);
+            }
+            
+            activeMultiplier = {
+                multiplier: multiplier,
+                                endTime: Date.now() + (duration * 1000),
+                timeout: setTimeout(() => {
+                    activeMultiplier = null;
+                    updateDisplay();
+                }, duration * 1000)
+            };
+            
+            updateDisplay();
+        }
+        
+        function updateQuestTimer() {
+            const timerElement = document.getElementById('questTimer');
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            
+            const timeLeft = tomorrow - now;
+            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            timerElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        function formatNumber(num) {
+            if (num >= 1000000000000) return (num / 1000000000000).toFixed(1) + 'T';
+            if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'B';
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return Math.floor(num).toString();
+        }
+        
+        function updateDisplay() {
+            const questMultiplier = activeMultiplier ? activeMultiplier.multiplier : 1;
+            const totalMultiplier = gameState.rebirthMultiplier * gameState.prestigeBonus * questMultiplier;
+            
+            document.getElementById('currency').textContent = formatNumber(gameState.currency);
+            document.getElementById('perSecond').textContent = formatNumber(gameState.passiveIncome * totalMultiplier);
+            document.getElementById('rebirthCurrency').textContent = gameState.rebirthCurrency;
+            document.getElementById('rebirthMultiplier').textContent = gameState.rebirthMultiplier.toFixed(1);
+            document.getElementById('prestigeCurrency').textContent = gameState.prestigeCurrency;
+            document.getElementById('prestigeBonus').textContent = ((gameState.prestigeBonus - 1) * 100).toFixed(0);
+            
+            // Aktualizuj przycisk odrodzenia
+            const rebirthButton = document.getElementById('rebirthButton');
+            const requiredForRebirth = 1000000;
+            if (gameState.totalEarned >= requiredForRebirth) {
+                rebirthButton.disabled = false;
+                const stonesGained = calculateRebirthGain();
+                rebirthButton.textContent = `Odrodzenie (Otrzymasz ${stonesGained} Kamieni)`;
+            } else {
+                rebirthButton.disabled = true;
+                rebirthButton.textContent = `Odrodzenie (Wymaga ${formatNumber(requiredForRebirth)} zarobku)`;
+            }
+            
+            // Aktualizuj przycisk prestiżu
+            const prestigeButton = document.getElementById('prestigeButton');
+            if (gameState.totalRebirths >= 10) {
+                prestigeButton.disabled = false;
+                const crownsGained = calculatePrestigeGain();
+                prestigeButton.textContent = `Cesarskie Odrodzenie (${crownsGained} Koron)`;
+            } else {
+                prestigeButton.disabled = true;
+                prestigeButton.textContent = `Cesarskie Odrodzenie (Wymaga 10 odrodzeń)`;
+            }
+        }
+        
+        function calculateRebirthGain() {
+            return Math.floor(Math.sqrt(gameState.totalEarned / 1000000));
+        }
+        
+        function clickCoin(event) {
+            const questMultiplier = activeMultiplier ? activeMultiplier.multiplier : 1;
+            const eventMultiplier = getEventMultiplier('click');
+            const totalMultiplier = gameState.rebirthMultiplier * gameState.prestigeBonus * questMultiplier * eventMultiplier;
+            
+            const earned = gameState.clickPower * totalMultiplier;
+            gameState.currency += earned;
+            gameState.totalEarned += earned;
+            gameState.totalClicks++;
+            
+            updateDisplay();
+            updateUpgradeButtons();
+            updateQuestProgress();
+            
+            // Efekt wizualny
+            const floatingText = document.createElement('div');
+            floatingText.className = 'floating-text';
+            floatingText.textContent = '+' + formatNumber(earned);
+            floatingText.style.left = event.clientX + 'px';
+            floatingText.style.top = event.clientY + 'px';
+            document.body.appendChild(floatingText);
+            setTimeout(() => floatingText.remove(), 1000);
+        }
+        
+        function calculateUpgradeCost(upgrade) {
+            return Math.floor(upgrade.baseCost * Math.pow(1.5, upgrade.level));
+        }
+        
+        function buyUpgrade(type, index) {
+            const upgrade = gameState.upgrades[type][index];
+            
+            // Sprawdź czy upgrade jest odblokowany
+            if (upgrade.requiredRebirths > gameState.totalRebirths) {
+                return;
+            }
+            
+            const cost = calculateUpgradeCost(upgrade);
+            
+            if (gameState.currency >= cost) {
+                gameState.currency -= cost;
+                upgrade.level++;
+                gameState.upgradesBought++;
+                
+                if (type === 'click') {
+                    gameState.clickPower += upgrade.power;
+                } else {
+                    gameState.passiveIncome += upgrade.power;
+                }
+                
+                updateDisplay();
+                renderUpgrades();
+                updateQuestProgress();
+            }
+        }
+        
+        function renderUpgrades() {
+            const clickContainer = document.getElementById('clickUpgrades');
+            const passiveContainer = document.getElementById('passiveUpgrades');
+            
+            clickContainer.innerHTML = '';
+            passiveContainer.innerHTML = '';
+            
+            gameState.upgrades.click.forEach((upgrade, index) => {
+                const cost = calculateUpgradeCost(upgrade);
+                const affordable = gameState.currency >= cost;
+                const isLocked = upgrade.requiredRebirths > gameState.totalRebirths;
+                
+                const upgradeElement = document.createElement('div');
+                upgradeElement.className = `upgrade ${affordable && !isLocked ? 'affordable' : ''} ${upgrade.level > 0 ? 'purchased' : ''} ${isLocked ? 'locked' : ''}`;
+                
+                if (isLocked) {
+                    upgradeElement.innerHTML = `
+                        <div class="upgrade-name">${upgrade.name}</div>
+                        <div class="upgrade-description">${upgrade.description}</div>
+                        <div class="upgrade-cost">Koszt: ${formatNumber(cost)} dukatów</div>
+                        <div class="lock-icon">🔒</div>
+                        <div class="unlock-info">Wymaga ${upgrade.requiredRebirths} odrodzeń</div>
+                    `;
+                } else {
+                    upgradeElement.innerHTML = `
+                        <div class="upgrade-name">${upgrade.name}</div>
+                        <div class="upgrade-description">${upgrade.description}</div>
+                        <div class="upgrade-cost">Koszt: ${formatNumber(cost)} dukatów</div>
+                        ${upgrade.level > 0 ? `<div class="upgrade-level">Poziom: ${upgrade.level}</div>` : ''}
+                    `;
+                    upgradeElement.onclick = () => buyUpgrade('click', index);
+                }
+                
+                clickContainer.appendChild(upgradeElement);
+            });
+            
+            gameState.upgrades.passive.forEach((upgrade, index) => {
+                const cost = calculateUpgradeCost(upgrade);
+                const affordable = gameState.currency >= cost;
+                const eventMultiplier = getEventMultiplier('passive', upgrade.id);
+                const isLocked = upgrade.requiredRebirths > gameState.totalRebirths;
+                
+                const upgradeElement = document.createElement('div');
+                upgradeElement.className = `upgrade ${affordable && !isLocked ? 'affordable' : ''} ${upgrade.level > 0 ? 'purchased' : ''} ${isLocked ? 'locked' : ''}`;
+                
+                if (isLocked) {
+                    upgradeElement.innerHTML = `
+                        <div class="upgrade-name">${upgrade.name}</div>
+                        <div class="upgrade-description">${upgrade.description}</div>
+                        <div class="upgrade-cost">Koszt: ${formatNumber(cost)} dukatów</div>
+                        <div class="lock-icon">🔒</div>
+                        <div class="unlock-info">Wymaga ${upgrade.requiredRebirths} odrodzeń</div>
+                    `;
+                } else {
+                    upgradeElement.innerHTML = `
+                        <div class="upgrade-name">${upgrade.name} ${eventMultiplier > 1 ? `(x${eventMultiplier})` : ''}</div>
+                        <div class="upgrade-description">${upgrade.description}</div>
+                        <div class="upgrade-cost">Koszt: ${formatNumber(cost)} dukatów</div>
+                        ${upgrade.level > 0 ? `<div class="upgrade-level">Poziom: ${upgrade.level}</div>` : ''}
+                    `;
+                    upgradeElement.onclick = () => buyUpgrade('passive', index);
+                }
+                
+                passiveContainer.appendChild(upgradeElement);
+            });
+        }
+        
+        function updateUpgradeButtons() {
+            const upgrades = document.querySelectorAll('.upgrade');
+            upgrades.forEach((element, index) => {
+                const allUpgrades = [...gameState.upgrades.click, ...gameState.upgrades.passive];
+                if (index < allUpgrades.length) {
+                    const upgrade = allUpgrades[index];
+                    const cost = calculateUpgradeCost(upgrade);
+                    const affordable = gameState.currency >= cost;
+                    const isLocked = upgrade.requiredRebirths > gameState.totalRebirths;
+                    
+                    if (!isLocked) {
+                        if (affordable && !element.classList.contains('affordable')) {
+                            element.classList.add('affordable');
+                        } else if (!affordable && element.classList.contains('affordable')) {
+                            element.classList.remove('affordable');
+                        }
+                    }
+                }
+            });
+        }
+        
+        function showRebirthModal() {
+            const stonesGained = calculateRebirthGain();
+            document.getElementById('rebirthGain').textContent = stonesGained;
+            document.getElementById('rebirthModal').style.display = 'block';
+        }
+        
+        function hideRebirthModal() {
+            document.getElementById('rebirthModal').style.display = 'none';
+        }
+        
+        function showPrestigeModal() {
+            const crownsGained = calculatePrestigeGain();
+            document.getElementById('prestigeGain').textContent = crownsGained;
+            document.getElementById('prestigeModal').style.display = 'block';
+        }
+        
+        function hidePrestigeModal() {
+            document.getElementById('prestigeModal').style.display = 'none';
+        }
+        
+        function performRebirth() {
+            const stonesGained = calculateRebirthGain();
+            
+            gameState.rebirthCurrency += stonesGained;
+            gameState.rebirthMultiplier = 1 + (gameState.rebirthCurrency * 0.5);
+            gameState.totalRebirths++;
+            
+            // Reset podstawowy
+            gameState.currency = 0;
+            gameState.clickPower = 1;
+            gameState.passiveIncome = 0;
+            gameState.totalEarned = 0;
+            
+            gameState.upgrades.click.forEach(upgrade => upgrade.level = 0);
+            gameState.upgrades.passive.forEach(upgrade => upgrade.level = 0);
+            
+            // Zastosuj bonusy prestiżowe
+            initializePrestige();
+            
+            // Resetuj zadania dzienne
+            gameState.dailyQuests.forEach(quest => {
+                quest.progress = 0;
+                quest.completed = false;
+                quest.startValue = getQuestStartValue(quest.type);
+            });
+            
+            hideRebirthModal();
+            updateDisplay();
+            renderUpgrades();
+            updateQuestNotification();
+        }
+        
+        function performPrestige() {
+            const crownsGained = calculatePrestigeGain();
+            
+            // Dodaj korony cesarskie
+            gameState.prestigeCurrency += crownsGained;
+            
+            // Zachowaj strukturę upgradów
+            const upgradeStructure = JSON.parse(JSON.stringify(gameState.upgrades));
+            
+            // PEŁNY RESET
+            gameState = {
+                currency: 0,
+                clickPower: 1,
+                passiveIncome: 0,
+                rebirthCurrency: 0,
+                rebirthMultiplier: 1,
+                prestigeCurrency: gameState.prestigeCurrency,
+                prestigeBonus: 1 + (gameState.prestigeCurrency * 0.05),
+                totalEarned: 0,
+                totalClicks: 0,
+                upgradesBought: 0,
+                totalRebirths: 0,
+                lastQuestReset: new Date().toDateString(),
+                dailyQuests: [],
+                upgrades: upgradeStructure
+            };
+            
+            // Resetuj poziomy wszystkich ulepszeń
+            gameState.upgrades.click.forEach(upgrade => upgrade.level = 0);
+            gameState.upgrades.passive.forEach(upgrade => upgrade.level = 0);
+            
+            // Zastosuj bonusy prestiżowe
+            initializePrestige();
+            
+            // Zainicjuj zadania dzienne
+            initializeDailyQuests();
+            
+            hidePrestigeModal();
+            updateDisplay();
+            renderUpgrades();
+            saveGame();
+        }
+        
+        // Pasywny przychód
+        setInterval(() => {
+            if (gameState.passiveIncome > 0) {
+                const questMultiplier = activeMultiplier ? activeMultiplier.multiplier : 1;
+                const eventMultiplier = getEventMultiplier('passive');
+                const totalMultiplier = gameState.rebirthMultiplier * gameState.prestigeBonus * questMultiplier * eventMultiplier;
+                
+                // Oblicz przychód z uwzględnieniem specjalnych mnożników dla konkretnych ulepszeń
+                let totalIncome = 0;
+                gameState.upgrades.passive.forEach(upgrade => {
+                    if (upgrade.level > 0 && upgrade.requiredRebirths <= gameState.totalRebirths) {
+                        const upgradeMultiplier = getEventMultiplier('passive', upgrade.id);
+                        totalIncome += upgrade.power * upgrade.level * totalMultiplier * (upgradeMultiplier > 1 ? upgradeMultiplier : 1);
+                    }
+                });
+                
+                gameState.currency += totalIncome;
+                gameState.totalEarned += totalIncome;
+                updateDisplay();
+                updateUpgradeButtons();
+                updateQuestProgress();
+            }
+        }, 1000);
+        
+        // Aktualizuj timery i sprawdzaj wydarzenia
+        setInterval(() => {
+            // Aktualizuj timer zadań
+            if (document.getElementById('questsModal').style.display === 'block') {
+                updateQuestTimer();
+            }
+            
+            // Sprawdź czy to nowy dzień
+                        const today = new Date().toDateString();
+            if (gameState.lastQuestReset !== today) {
+                initializeDailyQuests();
+            }
+            
+            // Sprawdź losowe wydarzenia
+            checkRandomEvent();
+            
+            // Aktualizuj timer wydarzenia
+            updateEventTimer();
+        }, 1000);
+        
+        // Zapisywanie gry
+        function saveGame() {
+            const saveData = {
+                ...gameState,
+                activeMultiplier: activeMultiplier ? {
+                    multiplier: activeMultiplier.multiplier,
+                    endTime: activeMultiplier.endTime
+                } : null,
+                activeEvent: activeEvent ? {
+                    ...activeEvent,
+                    endTime: activeEvent.endTime
+                } : null,
+                nextEventTime: nextEventTime
+            };
+            localStorage.setItem('medievalClickerSave', JSON.stringify(saveData));
+        }
+        
+        function loadGame() {
+            const savedGame = localStorage.getItem('medievalClickerSave');
+            if (savedGame) {
+                const loadedData = JSON.parse(savedGame);
+                
+                // Zachowaj strukturę upgradów z nowymi upgradami
+                const defaultUpgrades = JSON.parse(JSON.stringify(gameState.upgrades));
+                
+                gameState = {
+                    ...gameState,
+                    ...loadedData,
+                    activeMultiplier: undefined,
+                    activeEvent: undefined
+                };
+                
+                // Upewnij się, że wszystkie nowe upgrady są w stanie gry
+                if (loadedData.upgrades) {
+                    // Sprawdź czy są nowe upgrady do dodania
+                    defaultUpgrades.click.forEach((defaultUpgrade, index) => {
+                        if (!gameState.upgrades.click[index]) {
+                            gameState.upgrades.click[index] = defaultUpgrade;
+                        } else {
+                            // Upewnij się, że requiredRebirths jest ustawione
+                            if (gameState.upgrades.click[index].requiredRebirths === undefined) {
+                                gameState.upgrades.click[index].requiredRebirths = defaultUpgrade.requiredRebirths;
+                            }
+                        }
+                    });
+                    
+                    defaultUpgrades.passive.forEach((defaultUpgrade, index) => {
+                        if (!gameState.upgrades.passive[index]) {
+                            gameState.upgrades.passive[index] = defaultUpgrade;
+                        } else {
+                            // Upewnij się, że requiredRebirths jest ustawione
+                            if (gameState.upgrades.passive[index].requiredRebirths === undefined) {
+                                gameState.upgrades.passive[index].requiredRebirths = defaultUpgrade.requiredRebirths;
+                            }
+                        }
+                    });
+                }
+                
+                // Przywróć aktywny mnożnik jeśli istnieje
+                if (loadedData.activeMultiplier && loadedData.activeMultiplier.endTime > Date.now()) {
+                    const timeLeft = loadedData.activeMultiplier.endTime - Date.now();
+                    activateMultiplier(loadedData.activeMultiplier.multiplier, timeLeft / 1000);
+                }
+                
+                // Przywróć aktywne wydarzenie jeśli istnieje
+                if (loadedData.activeEvent && loadedData.activeEvent.endTime > Date.now()) {
+                    activeEvent = loadedData.activeEvent;
+                    showEventBanner(activeEvent);
+                    setTimeout(() => {
+                        activeEvent = null;
+                        hideEventBanner();
+                        nextEventTime = Date.now() + (Math.random() * 300000 + 300000);
+                    }, activeEvent.endTime - Date.now());
+                }
+                
+                // Przywróć czas następnego wydarzenia
+                if (loadedData.nextEventTime) {
+                    nextEventTime = loadedData.nextEventTime;
+                }
+                
+                // Zastosuj bonusy prestiżowe
+                initializePrestige();
+                
+                updateDisplay();
+                renderUpgrades();
+            }
+            
+            // Inicjalizuj zadania dzienne
+            initializeDailyQuests();
+        }
+        
+        // Automatyczny zapis co 10 sekund
+        setInterval(saveGame, 10000);
+        
+        // Inicjalizacja
+        loadGame();
+        updateDisplay();
+        renderUpgrades();
+        
+        // Zapisz grę przy zamykaniu strony
+        window.addEventListener('beforeunload', saveGame);
+    </script>
+</body>
+</html>
