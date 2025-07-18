@@ -19,6 +19,7 @@
             color: #f4e4bc;
             min-height: 100vh;
             overflow-x: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">⚔️</text></svg>'), auto;
         }
         
         .container {
@@ -62,6 +63,18 @@
         .prestige-info {
             font-size: 1.1em;
             color: #e91e63;
+            margin-top: 5px;
+        }
+        
+        .heritage-info {
+            font-size: 1em;
+            color: #7c4dff;
+            margin-top: 5px;
+        }
+        
+        .automation-info {
+            font-size: 1em;
+            color: #4caf50;
             margin-top: 5px;
         }
         
@@ -118,7 +131,7 @@
             background: radial-gradient(circle, #ffd700, #b8860b);
             border: 5px solid #8b6914;
             border-radius: 50%;
-            cursor: pointer;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">💰</text></svg>'), pointer;
             font-size: 3em;
             color: #3d2914;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
@@ -135,6 +148,7 @@
         
         .coin-button:active {
             transform: scale(0.95);
+            cursor: grabbing;
         }
         
         .coin-button:focus {
@@ -167,7 +181,7 @@
             padding: 12px 25px;
             font-size: 1.1em;
             border-radius: 10px;
-            cursor: pointer;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">👆</text></svg>'), pointer;
             transition: all 0.3s;
             outline: none;
             font-family: 'MedievalSharp', cursive;
@@ -181,7 +195,7 @@
         
         .game-button:disabled {
             opacity: 0.5;
-            cursor: not-allowed;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">🚫</text></svg>'), not-allowed;
         }
         
         .rebirth-button {
@@ -220,6 +234,15 @@
             box-shadow: 0 5px 15px rgba(156,39,176,0.5);
         }
         
+        .automation-button {
+            background: linear-gradient(to bottom, #2e7d32, #1b5e20);
+            border-color: #4caf50;
+        }
+
+        .automation-button:hover {
+            box-shadow: 0 5px 15px rgba(76,175,80,0.5);
+        }
+        
         .quest-notification {
             position: absolute;
             top: -5px;
@@ -245,7 +268,7 @@
         .collapsible {
             background: linear-gradient(to bottom, #5a440e, #3d2914);
             color: #ffd700;
-            cursor: pointer;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">👆</text></svg>'), pointer;
             padding: 18px;
             width: 100%;
             border: 3px solid #8b6914;
@@ -326,7 +349,7 @@
             border: 2px solid #8b6914;
             border-radius: 10px;
             padding: 15px;
-            cursor: pointer;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">👆</text></svg>'), pointer;
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
@@ -349,7 +372,7 @@
         .upgrade.locked {
             background: linear-gradient(to right, #1a1a1a, #2a2a2a);
             border-color: #555;
-            cursor: not-allowed;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">🚫</text></svg>'), not-allowed;
             opacity: 0.6;
         }
         
@@ -418,6 +441,25 @@
             z-index: 1000;
         }
         
+        /* Kursor przy najechaniu na elementy klikalne */
+        button, 
+        .upgrade:not(.locked), 
+        .collapsible,
+        .guild-card,
+        .join-guild-button,
+        .claim-button,
+        a {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">👆</text></svg>'), pointer;
+        }
+
+        /* Kursor dla zablokowanych elementów */
+        .upgrade.locked,
+        button:disabled,
+        .join-guild-button:disabled,
+        .claim-button:disabled {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">🚫</text></svg>'), not-allowed;
+        }
+        
         .modal {
             display: none;
             position: fixed;
@@ -427,6 +469,7 @@
             height: 100%;
             background: rgba(0,0,0,0.8);
             z-index: 2000;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">⚔️</text></svg>'), auto;
         }
         
         .modal-content {
@@ -443,6 +486,7 @@
             width: 400px;
             max-height: 80vh;
             overflow-y: auto;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">⚔️</text></svg>'), auto;
         }
         
         .modal h2 {
@@ -461,7 +505,7 @@
             padding: 10px 20px;
             font-size: 1.1em;
             border-radius: 5px;
-            cursor: pointer;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">👆</text></svg>'), pointer !important;
             font-family: 'MedievalSharp', cursive;
             outline: none;
         }
@@ -506,6 +550,7 @@
             padding: 15px;
             margin: 10px 0;
             text-align: left;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">📜</text></svg>'), pointer;
         }
         
         .quest-item.completed {
@@ -515,6 +560,7 @@
         
         .quest-item.claimed {
             opacity: 0.5;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">🚫</text></svg>'), not-allowed !important;
         }
         
         .quest-title {
@@ -548,13 +594,13 @@
             padding: 8px 16px;
             font-size: 1em;
             border-radius: 5px;
-            cursor: pointer;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">👆</text></svg>'), pointer !important;
             font-family: 'MedievalSharp', cursive;
         }
         
         .claim-button:disabled {
             opacity: 0.5;
-            cursor: not-allowed;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">🚫</text></svg>'), not-allowed !important;
         }
         
         .timer-info {
@@ -585,7 +631,7 @@
             border-radius: 15px;
             padding: 20px;
             text-align: center;
-            cursor: pointer;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">🏰</text></svg>'), pointer;
             transition: all 0.3s;
         }
 
@@ -628,7 +674,7 @@
             padding: 10px 20px;
             font-size: 1.1em;
             border-radius: 5px;
-            cursor: pointer;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">👆</text></svg>'), pointer !important;
             font-family: 'MedievalSharp', cursive;
             margin-top: 10px;
         }
@@ -639,7 +685,7 @@
 
         .join-guild-button:disabled {
             opacity: 0.5;
-            cursor: not-allowed;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">🚫</text></svg>'), not-allowed !important;
         }
 
         .guild-info {
@@ -673,6 +719,154 @@
             color: #fff;
             font-size: 0.9em;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+        }
+        
+        /* Style dla systemu automatyzacji */
+        .automation-modal .modal-content {
+            border-color: #4caf50;
+            max-width: 500px;
+        }
+
+        .automation-modal h2 {
+            color: #4caf50;
+        }
+
+        .automation-item {
+            background: linear-gradient(to right, #1a3a1a, #2a4a2a);
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: left;
+        }
+
+        .automation-name {
+            font-size: 1.2em;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+
+        .automation-description {
+            font-size: 0.9em;
+            color: #d4af37;
+            margin-bottom: 10px;
+        }
+
+        .automation-stats {
+            font-size: 1em;
+            color: #4caf50;
+            margin-bottom: 10px;
+        }
+
+        .automation-button {
+            background: linear-gradient(to bottom, #2e7d32, #1b5e20);
+            border: 2px solid #4caf50;
+            color: #fff;
+            padding: 8px 16px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">👆</text></svg>'), pointer !important;
+            font-family: 'MedievalSharp', cursive;
+        }
+
+        .automation-button:hover {
+            background: linear-gradient(to bottom, #388e3c, #2e7d32);
+        }
+
+        .automation-button:disabled {
+            opacity: 0.5;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">🚫</text></svg>'), not-allowed !important;
+        }
+        
+        /* Style dla systemu dziedzictwa */
+        .heritage-modal .modal-content {
+            border-color: #7c4dff;
+            max-width: 600px;
+        }
+
+        .heritage-modal h2 {
+            color: #7c4dff;
+        }
+
+        .heritage-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .heritage-card {
+            background: linear-gradient(to bottom, #311b92, #1a237e);
+            border: 3px solid #7c4dff;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">📜</text></svg>'), pointer;
+            transition: all 0.3s;
+        }
+
+        .heritage-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(124,77,255,0.5);
+        }
+
+        .heritage-card.selected {
+            border-color: #ffd700;
+            background: linear-gradient(to bottom, #4527a0, #311b92);
+        }
+
+        .heritage-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .heritage-name {
+            font-size: 1.3em;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .heritage-description {
+            font-size: 0.9em;
+            color: #d4af37;
+            margin-bottom: 15px;
+        }
+
+        .select-heritage-button {
+            background: linear-gradient(to bottom, #5e35b1, #4527a0);
+            border: 2px solid #7c4dff;
+            color: #fff;
+            padding: 8px 16px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">👆</text></svg>'), pointer !important;
+            font-family: 'MedievalSharp', cursive;
+        }
+
+        .select-heritage-button:hover {
+            background: linear-gradient(to bottom, #7e57c2, #5e35b1);
+        }
+
+        .select-heritage-button:disabled {
+            opacity: 0.5;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">🚫</text></svg>'), not-allowed !important;
+        }
+        
+        /* Kursory dla modali */
+        .modal button:disabled {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">🚫</text></svg>'), not-allowed !important;
+        }
+
+        .rebirth-modal .confirm-button:hover {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">🔥</text></svg>'), pointer !important;
+        }
+
+        .prestige-modal .confirm-button:hover {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">👑</text></svg>'), pointer !important;
+        }
+
+        *[onclick] {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">👆</text></svg>'), pointer !important;
         }
         
         @keyframes float-up {
@@ -713,90 +907,6 @@
                 max-height: 400px;
             }
         }
-/* Customowe kursory */
-body {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">⚔️</text></svg>'), auto;
-}
-
-/* Kursor przy najechaniu na elementy klikalne */
-button, 
-.upgrade:not(.locked), 
-.collapsible,
-.guild-card,
-.join-guild-button,
-.claim-button,
-a {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">👆</text></svg>'), pointer;
-}
-
-/* Specjalny kursor dla głównego przycisku monet */
-.coin-button {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">💰</text></svg>'), pointer;
-}
-
-/* Kursor dla zablokowanych elementów */
-.upgrade.locked,
-button:disabled,
-.join-guild-button:disabled,
-.claim-button:disabled {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">🚫</text></svg>'), not-allowed;
-}
-
-/* Kursor ładowania */
-.loading {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">⏳</text></svg>'), wait;
-}
-/* Customowe kursory dla modali */
-.modal {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">⚔️</text></svg>'), auto;
-}
-
-.modal-content {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">⚔️</text></svg>'), auto;
-}
-
-/* Kursory dla elementów wewnątrz modali */
-.modal button,
-.modal .guild-card,
-.modal .join-guild-button,
-.modal .claim-button,
-.modal .quest-item,
-.confirm-button,
-.cancel-button {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">👆</text></svg>'), pointer !important;
-}
-
-/* Specjalny kursor dla zadań */
-.quest-item {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">📜</text></svg>'), pointer;
-}
-
-/* Kursor dla gildii */
-.guild-card:hover {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">🏰</text></svg>'), pointer;
-}
-
-/* Kursor dla nieaktywnych elementów w modalach */
-.modal button:disabled,
-.modal .join-guild-button:disabled,
-.modal .claim-button:disabled,
-.quest-item.claimed {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">🚫</text></svg>'), not-allowed !important;
-}
-
-/* Specjalne kursory dla różnych typów modali */
-.rebirth-modal .confirm-button:hover {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">🔥</text></svg>'), pointer !important;
-}
-
-.prestige-modal .confirm-button:hover {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">👑</text></svg>'), pointer !important;
-}
-
-/* Upewnij się, że wszystkie interaktywne elementy mają właściwy kursor */
-*[onclick] {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="0" y="24" font-size="24">👆</text></svg>'), pointer !important;
-}
     </style>
 </head>
 <body>
@@ -808,6 +918,8 @@ button:disabled,
                 <div class="per-second">Za sekundę: <span id="perSecond">0</span></div>
                 <div class="rebirth-info">Odrodzenia: <span id="rebirthCount">0</span> (Mnożnik: x<span id="rebirthMultiplier">1</span>)</div>
                 <div class="prestige-info">Korony Cesarskie: <span id="prestigeCurrency">0</span> (Bonus startowy: +<span id="prestigeBonus">0</span>%)</div>
+                <div class="heritage-info" id="heritageInfo" style="display: none;">Dziedzictwo: <span id="heritageType">Brak</span></div>
+                <div class="automation-info" id="automationInfo" style="display: none;">Golemy: <span id="golemCount">0</span> (Kliknięć/s: <span id="golemCPS">0</span>)</div>
             </div>
         </div>
         
@@ -822,6 +934,9 @@ button:disabled,
                 </button>
                 <button class="game-button guild-button" id="guildButton" onclick="showGuildModal()" style="display: none;">
                     Gildia: <span id="guildName">Brak</span>
+                </button>
+                <button class="game-button automation-button" id="automationButton" onclick="showAutomationModal()" style="display: none;">
+                    Automatyzacja 🤖
                 </button>
                 <button class="game-button rebirth-button" id="rebirthButton" onclick="showRebirthModal()">Odrodzenie</button>
                 <button class="game-button prestige-button" id="prestigeButton" onclick="showPrestigeModal()">Cesarskie Odrodzenie</button>
@@ -937,6 +1052,74 @@ button:disabled,
         </div>
     </div>
     
+    <div class="modal automation-modal" id="automationModal">
+        <div class="modal-content">
+            <h2>System Automatyzacji</h2>
+            <p>Zatrudnij magiczne golemy, które będą klikać za Ciebie!</p>
+            
+            <div class="automation-item">
+                <div class="automation-name">Kamienny Golem</div>
+                <div class="automation-description">Podstawowy golem klikający 1 raz na sekundę</div>
+                <div class="automation-stats">Posiadasz: <span id="stoneGolemCount">0</span> | Kliknięć/s: <span id="stoneGolemCPS">0</span></div>
+                <button class="automation-button" id="buyStoneGolem" onclick="buyGolem('stone')">
+                    Kup za <span id="stoneGolemCost">100K</span> dukatów
+                </button>
+            </div>
+            
+            <div class="automation-item">
+                <div class="automation-name">Żelazny Golem</div>
+                <div class="automation-description">Ulepszona wersja klikająca 5 razy na sekundę</div>
+                <div class="automation-stats">Posiadasz: <span id="ironGolemCount">0</span> | Kliknięć/s: <span id="ironGolemCPS">0</span></div>
+                <button class="automation-button" id="buyIronGolem" onclick="buyGolem('iron')">
+                    Kup za <span id="ironGolemCost">1M</span> dukatów
+                </button>
+            </div>
+            
+            <div class="automation-item">
+                <div class="automation-name">Kryształowy Golem</div>
+                <div class="automation-description">Elitarny golem klikający 20 razy na sekundę</div>
+                <div class="automation-stats">Posiadasz: <span id="crystalGolemCount">0</span> | Kliknięć/s: <span id="crystalGolemCPS">0</span></div>
+                <button class="automation-button" id="buyCrystalGolem" onclick="buyGolem('crystal')">
+                    Kup za <span id="crystalGolemCost">10M</span> dukatów
+                </button>
+            </div>
+            
+            <button class="cancel-button" onclick="hideAutomationModal()">Zamknij</button>
+        </div>
+    </div>
+    
+    <div class="modal heritage-modal" id="heritageModal">
+        <div class="modal-content">
+            <h2>Wybierz Dziedzictwo</h2>
+            <p>Twoje dziedzictwo będzie aktywne do następnego prestiżu!</p>
+            
+            <div class="heritage-container">
+                <div class="heritage-card" id="merchant-heritage">
+                    <div class="heritage-icon">💰</div>
+                    <div class="heritage-name">Dziedzictwo Kupca</div>
+                    <div class="heritage-description">Wszystkie ulepszenia są 10% tańsze</div>
+                    <button class="select-heritage-button" onclick="selectHeritage('merchant')">Wybierz</button>
+                </div>
+                
+                <div class="heritage-card" id="warrior-heritage">
+                    <div class="heritage-icon">⚔️</div>
+                    <div class="heritage-name">Dziedzictwo Wojownika</div>
+                    <div class="heritage-description">Rozpoczynasz z 100 mocy kliknięć</div>
+                    <button class="select-heritage-button" onclick="selectHeritage('warrior')">Wybierz</button>
+                </div>
+                
+                <div class="heritage-card" id="mage-heritage">
+                    <div class="heritage-icon">🧙</div>
+                    <div class="heritage-name">Dziedzictwo Maga</div>
+                    <div class="heritage-description">Wydarzenia trwają 2x dłużej</div>
+                    <button class="select-heritage-button" onclick="selectHeritage('mage')">Wybierz</button>
+                </div>
+            </div>
+            
+            <button class="cancel-button" onclick="skipHeritage()">Pomiń wybór</button>
+        </div>
+    </div>
+    
     <script>
         let gameState = {
             currency: 0,
@@ -954,6 +1137,12 @@ button:disabled,
             currentGuild: null,
             guildLevel: 0,
             guildExperience: 0,
+            currentHeritage: null,
+            automation: {
+                stone: {count: 0, cps: 1, baseCost: 100000},
+                iron: {count: 0, cps: 5, baseCost: 1000000},
+                crystal: {count: 0, cps: 20, baseCost: 10000000}
+            },
             guildBonuses: {
                 kupcy: {
                     clickBonus: 2.0,      // +100% do kliknięć
@@ -1137,6 +1326,7 @@ button:disabled,
         let activeMultiplier = null;
         let activeEvent = null;
         let nextEventTime = Date.now() + (Math.random() * 300000 + 300000);
+        let pendingPrestige = false;
         
         // Funkcje systemu gildii
         function showGuildModal() {
@@ -1259,17 +1449,141 @@ button:disabled,
         }
 
         function getUpgradeCostWithDiscount(baseCost) {
+            let discount = 0;
+            
             if (gameState.currentGuild === 'kupcy') {
-                return Math.floor(baseCost * (1 - gameState.guildBonuses.kupcy.upgradeDiscount));
+                discount += gameState.guildBonuses.kupcy.upgradeDiscount;
             }
-            return baseCost;
+            
+            if (gameState.currentHeritage === 'merchant') {
+                discount += 0.1; // dodatkowe 10% zniżki
+            }
+            
+            return Math.floor(baseCost * (1 - discount));
+        }
+        
+        // System automatyzacji
+        function showAutomationModal() {
+            updateAutomationDisplay();
+            document.getElementById('automationModal').style.display = 'block';
+        }
+
+        function hideAutomationModal() {
+            document.getElementById('automationModal').style.display = 'none';
+        }
+
+        function updateAutomationDisplay() {
+            const types = ['stone', 'iron', 'crystal'];
+            const names = {
+                stone: 'Kamienny',
+                iron: 'Żelazny',
+                crystal: 'Kryształowy'
+            };
+            
+            types.forEach(type => {
+                const golem = gameState.automation[type];
+                const cost = calculateGolemCost(type);
+                
+                document.getElementById(`${type}GolemCount`).textContent = golem.count;
+                document.getElementById(`${type}GolemCPS`).textContent = golem.count * golem.cps;
+                document.getElementById(`${type}GolemCost`).textContent = formatNumber(cost);
+                
+                const button = document.getElementById(`buy${type.charAt(0).toUpperCase() + type.slice(1)}Golem`);
+                button.disabled = gameState.currency < cost;
+            });
+        }
+
+        function calculateGolemCost(type) {
+            const golem = gameState.automation[type];
+            return Math.floor(golem.baseCost * Math.pow(1.5, golem.count));
+        }
+
+        function buyGolem(type) {
+            const cost = calculateGolemCost(type);
+            
+            if (gameState.currency >= cost) {
+                gameState.currency -= cost;
+                gameState.automation[type].count++;
+                
+                updateDisplay();
+                updateAutomationDisplay();
+                saveGame();
+            }
+        }
+
+        function getTotalGolemCPS() {
+            let total = 0;
+            Object.values(gameState.automation).forEach(golem => {
+                total += golem.count * golem.cps;
+            });
+            return total;
+        }
+
+        function getTotalGolemCount() {
+            let total = 0;
+            Object.values(gameState.automation).forEach(golem => {
+                total += golem.count;
+            });
+            return total;
+        }
+        
+        // System dziedzictwa
+        function showHeritageModal() {
+            document.getElementById('heritageModal').style.display = 'block';
+            updateHeritageCards();
+        }
+
+        function hideHeritageModal() {
+            document.getElementById('heritageModal').style.display = 'none';
+        }
+
+        function updateHeritageCards() {
+            const heritages = ['merchant', 'warrior', 'mage'];
+            heritages.forEach(heritage => {
+                const card = document.getElementById(`${heritage}-heritage`);
+                const button = card.querySelector('.select-heritage-button');
+                
+                if (gameState.currentHeritage === heritage) {
+                    card.classList.add('selected');
+                    button.textContent = 'Aktywne';
+                    button.disabled = true;
+                } else {
+                    card.classList.remove('selected');
+                    button.textContent = 'Wybierz';
+                    button.disabled = false;
+                }
+            });
+        }
+
+        function selectHeritage(type) {
+            gameState.currentHeritage = type;
+            
+            // Zastosuj bonusy dziedzictwa
+            if (type === 'warrior') {
+                gameState.clickPower = Math.max(gameState.clickPower, 100);
+            }
+            
+            hideHeritageModal();
+            completePrestige();
+        }
+
+        function skipHeritage() {
+            hideHeritageModal();
+            completePrestige();
+        }
+
+        function completePrestige() {
+            pendingPrestige = false;
+            updateDisplay();
+            renderUpgrades();
+            saveGame();
         }
         
         function calculateRebirthCost() {
-    const baseRebirthCost = 1000000; // 1 milion dla pierwszego odrodzenia
-    const rebirths = gameState.totalRebirths || 0; // Zabezpieczenie przed undefined
-    return Math.floor(baseRebirthCost * Math.pow(1.6, rebirths));
-}
+            const baseRebirthCost = 1000000; // 1 milion dla pierwszego odrodzenia
+            const rebirths = gameState.totalRebirths || 0; // Zabezpieczenie przed undefined
+            return Math.floor(baseRebirthCost * Math.pow(1.6, rebirths));
+        }
         
         function toggleCollapsible(button, contentId) {
             button.classList.toggle("active");
@@ -1297,6 +1611,11 @@ button:disabled,
                     }
                 });
             }
+            
+            // Zastosuj dziedzictwo wojownika
+            if (gameState.currentHeritage === 'warrior') {
+                gameState.clickPower = Math.max(gameState.clickPower, 100);
+            }
         }
         
         function checkRandomEvent() {
@@ -1309,8 +1628,14 @@ button:disabled,
             const event = randomEvents[Math.floor(Math.random() * randomEvents.length)];
             let duration = event.duration;
             
+            // Bonus alchemików
             if (gameState.currentGuild === 'alchemicy') {
                 duration = Math.floor(duration * gameState.guildBonuses.alchemicy.eventDuration);
+            }
+            
+            // Bonus dziedzictwa maga
+            if (gameState.currentHeritage === 'mage') {
+                duration = Math.floor(duration * 2);
             }
             
             activeEvent = {
@@ -1573,6 +1898,25 @@ button:disabled,
             document.getElementById('prestigeCurrency').textContent = gameState.prestigeCurrency;
             document.getElementById('prestigeBonus').textContent = ((gameState.prestigeBonus - 1) * 100).toFixed(0);
             
+            // Aktualizuj informacje o dziedzictwie
+            if (gameState.currentHeritage) {
+                document.getElementById('heritageInfo').style.display = 'block';
+                const heritageNames = {
+                    merchant: 'Kupiec',
+                    warrior: 'Wojownik',
+                    mage: 'Mag'
+                };
+                document.getElementById('heritageType').textContent = heritageNames[gameState.currentHeritage];
+            }
+            
+            // Aktualizuj informacje o automatyzacji
+            if (gameState.totalRebirths >= 5) {
+                document.getElementById('automationButton').style.display = 'inline-block';
+                document.getElementById('automationInfo').style.display = 'block';
+                document.getElementById('golemCount').textContent = getTotalGolemCount();
+                document.getElementById('golemCPS').textContent = getTotalGolemCPS();
+            }
+            
             // Aktualizuj przycisk odrodzenia
             const rebirthButton = document.getElementById('rebirthButton');
             const rebirthCost = calculateRebirthCost();
@@ -1757,25 +2101,25 @@ button:disabled,
         }
         
         function showRebirthModal() {
-    const rebirthCost = calculateRebirthCost();
-    const guildDiscount = gameState.currentGuild === 'rycerze' ? gameState.guildBonuses.rycerze.rebirthDiscount : 0;
-    const finalCost = Math.floor(rebirthCost * (1 - guildDiscount));
-    
-    if (gameState.currency < finalCost) {
-        alert(`Potrzebujesz ${formatNumber(finalCost)} dukatów aby się odrodzić!`);
-        return;
-    }
-    
-    const currentMultiplier = gameState.rebirthMultiplier || 1; // Zabezpieczenie
-    const rebirths = gameState.totalRebirths || 0; // Zabezpieczenie
-    const guildBonus = gameState.currentGuild === 'alchemicy' ? gameState.guildBonuses.alchemicy.rebirthBonus : 0;
-    const newMultiplier = 1 + (rebirths + 1) * (0.5 + guildBonus);
-    
-    document.getElementById('rebirthCost').textContent = formatNumber(finalCost);
-    document.getElementById('currentMultiplier').textContent = currentMultiplier.toFixed(1);
-    document.getElementById('newMultiplier').textContent = newMultiplier.toFixed(1);
-    document.getElementById('rebirthModal').style.display = 'block';
-}
+            const rebirthCost = calculateRebirthCost();
+            const guildDiscount = gameState.currentGuild === 'rycerze' ? gameState.guildBonuses.rycerze.rebirthDiscount : 0;
+            const finalCost = Math.floor(rebirthCost * (1 - guildDiscount));
+            
+            if (gameState.currency < finalCost) {
+                alert(`Potrzebujesz ${formatNumber(finalCost)} dukatów aby się odrodzić!`);
+                return;
+            }
+            
+            const currentMultiplier = gameState.rebirthMultiplier || 1;
+            const rebirths = gameState.totalRebirths || 0;
+            const guildBonus = gameState.currentGuild === 'alchemicy' ? gameState.guildBonuses.alchemicy.rebirthBonus : 0;
+            const newMultiplier = 1 + (rebirths + 1) * (0.5 + guildBonus);
+            
+            document.getElementById('rebirthCost').textContent = formatNumber(finalCost);
+            document.getElementById('currentMultiplier').textContent = currentMultiplier.toFixed(1);
+            document.getElementById('newMultiplier').textContent = newMultiplier.toFixed(1);
+            document.getElementById('rebirthModal').style.display = 'block';
+        }
         
         function hideRebirthModal() {
             document.getElementById('rebirthModal').style.display = 'none';
@@ -1816,6 +2160,11 @@ button:disabled,
                 gameState.clickPower = gameState.guildBonuses.rycerze.startingPower;
             }
             
+            // Zastosuj dziedzictwo wojownika
+            if (gameState.currentHeritage === 'warrior') {
+                gameState.clickPower = Math.max(gameState.clickPower, 100);
+            }
+            
             gameState.upgrades.click.forEach(upgrade => upgrade.level = 0);
             gameState.upgrades.passive.forEach(upgrade => upgrade.level = 0);
             
@@ -1845,6 +2194,8 @@ button:disabled,
             // Zachowaj strukturę upgradów
             const upgradeStructure = JSON.parse(JSON.stringify(gameState.upgrades));
             
+            pendingPrestige = true;
+            
             // PEŁNY RESET
             gameState = {
                 currency: 0,
@@ -1862,6 +2213,12 @@ button:disabled,
                 currentGuild: null,
                 guildLevel: 0,
                 guildExperience: 0,
+                currentHeritage: null,
+                automation: {
+                    stone: {count: 0, cps: 1, baseCost: 100000},
+                    iron: {count: 0, cps: 5, baseCost: 1000000},
+                    crystal: {count: 0, cps: 20, baseCost: 10000000}
+                },
                 guildBonuses: gameState.guildBonuses,
                 upgrades: upgradeStructure
             };
@@ -1877,9 +2234,9 @@ button:disabled,
             initializeDailyQuests();
             
             hidePrestigeModal();
-            updateDisplay();
-            renderUpgrades();
-            saveGame();
+            
+            // Pokaż modal wyboru dziedzictwa
+            showHeritageModal();
         }
         
         // Pasywny przychód
@@ -1914,6 +2271,25 @@ button:disabled,
             }
         }, 1000);
         
+        // Automatyczne klikanie golemów
+        setInterval(() => {
+            const golemClicks = getTotalGolemCPS();
+            if (golemClicks > 0) {
+                const questMultiplier = activeMultiplier ? activeMultiplier.multiplier : 1;
+                const eventMultiplier = getEventMultiplier('click');
+                const guildClickMultiplier = getGuildMultiplier('click');
+                const guildAllMultiplier = getGuildMultiplier('all');
+                const totalMultiplier = gameState.rebirthMultiplier * gameState.prestigeBonus * questMultiplier * eventMultiplier * guildClickMultiplier * guildAllMultiplier;
+                
+                const earned = gameState.clickPower * totalMultiplier * golemClicks;
+                gameState.currency += earned;
+                gameState.totalEarned += earned;
+                
+                updateDisplay();
+                updateUpgradeButtons();
+            }
+        }, 1000);
+        
         // Aktualizuj timery i sprawdzaj wydarzenia
         setInterval(() => {
             // Aktualizuj timer zadań
@@ -1932,6 +2308,11 @@ button:disabled,
             
             // Aktualizuj timer wydarzenia
             updateEventTimer();
+            
+            // Aktualizuj modal automatyzacji jeśli otwarty
+            if (document.getElementById('automationModal').style.display === 'block') {
+                updateAutomationDisplay();
+            }
         }, 1000);
         
         // Zapisywanie gry
@@ -1955,14 +2336,11 @@ button:disabled,
             const savedGame = localStorage.getItem('medievalClickerSave');
             if (savedGame) {
                 const loadedData = JSON.parse(savedGame);
-                // Upewnij się, że totalRebirths jest zdefiniowane
-if (gameState.totalRebirths === undefined || gameState.totalRebirths === null) {
-    gameState.totalRebirths = 0;
-}
                 
                 // Zachowaj strukturę upgradów z nowymi upgradami
                 const defaultUpgrades = JSON.parse(JSON.stringify(gameState.upgrades));
                 const defaultGuildBonuses = JSON.parse(JSON.stringify(gameState.guildBonuses));
+                const defaultAutomation = JSON.parse(JSON.stringify(gameState.automation));
                 
                 gameState = {
                     ...gameState,
@@ -1970,6 +2348,11 @@ if (gameState.totalRebirths === undefined || gameState.totalRebirths === null) {
                     activeMultiplier: undefined,
                     activeEvent: undefined
                 };
+                
+                // Upewnij się, że totalRebirths jest zdefiniowane
+                if (gameState.totalRebirths === undefined || gameState.totalRebirths === null) {
+                    gameState.totalRebirths = 0;
+                }
                 
                 // Upewnij się, że gildie są załadowane
                 if (!gameState.guildBonuses) {
@@ -1983,6 +2366,16 @@ if (gameState.totalRebirths === undefined || gameState.totalRebirths === null) {
                 }
                 if (gameState.guildExperience === undefined) {
                     gameState.guildExperience = 0;
+                }
+                
+                // Upewnij się, że dziedzictwo jest załadowane
+                if (gameState.currentHeritage === undefined) {
+                    gameState.currentHeritage = null;
+                }
+                
+                // Upewnij się, że automatyzacja jest załadowana
+                if (!gameState.automation) {
+                    gameState.automation = defaultAutomation;
                 }
                 
                 // Upewnij się, że wszystkie nowe upgrady są w stanie gry
